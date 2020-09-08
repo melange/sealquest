@@ -16,9 +16,10 @@ logger = logging.getLogger(__name__)
 TOKEN = "ABC"
 
 def read_setings():
-    with open('private.json', 'r') as j:
-        json_data = json.load(j)
-        global TOKEN = json_data.TelegramToken
+    with open('private.json', 'r') as json_data:
+        json_data = json.load("private.json")
+        global TOKEN
+        TOKEN = json_data.TelegramToken
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
