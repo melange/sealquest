@@ -1,16 +1,16 @@
 from bot_logic import BotLogic
+from bot_settings_provider import BotSettingsProvider
 import json
 import logging
-import os 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
 class BotContainer:
 
-    def __init__(self, settings_filename, bot_logic):
+    def __init__(self, bot_settings_provider, bot_logic):
         self.logic = bot_logic
 
-        self.read_settings(settings_filename)
+        self.get_settings(bot_settings_provider)
 
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
         self.logger = logging.getLogger(__name__)
@@ -20,14 +20,13 @@ class BotContainer:
         self.register_handlers()
 
 
-    def read_settings(self, settings_filename):
-        with open(settings_filename, 'r') as json_file:
-            settings_json = json.load(json_file)
-        self.token = os.environ['TelegramToken']
-        #self.token = settings_json['TelegramToken']
-        self.webhook_app_url = settings_json['WebhookAppURL']
-        self.webhook_ip = settings_json['WebhookIP']
-        self.webhook_port = settings_json['WebhookPort']
+    def get_settings(self, bot_settings_provider):
+        settings = bot_settings_provider.get_settings()
+        self.token = settings['token']
+        self.webhook_app_url = settings['webhook_app_url']
+        self.webhook_ip = settings['webhook_ip']
+        self.webhook_port = settings['webhook_port']
+
 
 
     def register_handlers(self):
