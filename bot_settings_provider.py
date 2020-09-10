@@ -7,5 +7,5 @@ class BotSettingsProvider:
         settings['token'] = os.environ['TelegramToken']
         settings['webhook_app_url'] = os.environ['WebhookAppURL']
         settings['webhook_ip'] = os.environ['WebhookIP']
-        settings['webhook_port'] = os.environ['WebhookPort']
+        settings['webhook_port'] = int(os.environ.get('PORT', 5000))
         return settings

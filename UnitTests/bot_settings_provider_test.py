@@ -13,7 +13,7 @@ class Test_BotSettingsProvider(unittest.TestCase):
         settings_dict['TelegramToken'] = '1389512183:AAHIV1J5B67VpIbsxQyxgoZJ_Qion3kcpvg'
         settings_dict['WebhookAppURL'] = 'https://seal-quest-bot.herokuapp.com/'
         settings_dict['WebhookIP'] =  '0.0.0.0'
-        settings_dict['WebhookPort'] = 5000
+        settings_dict['PORT'] = 423
         os.environ = settings_dict
 
         bot_settings_provider = BotSettingsProvider()
@@ -22,7 +22,7 @@ class Test_BotSettingsProvider(unittest.TestCase):
         self.assertEqual(settings['token'], '1389512183:AAHIV1J5B67VpIbsxQyxgoZJ_Qion3kcpvg')
         self.assertEqual(settings['webhook_app_url'], 'https://seal-quest-bot.herokuapp.com/')
         self.assertEqual(settings['webhook_ip'], '0.0.0.0')
-        self.assertEqual(settings['webhook_port'], 5000)
+        self.assertEqual(settings['webhook_port'], 423)
 
 
 if __name__ == '__main__':
