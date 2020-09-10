@@ -1,7 +1,9 @@
 from bot_logic import BotLogic
 import json
 import logging
+import os 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
 
 class BotContainer:
 
@@ -21,7 +23,8 @@ class BotContainer:
     def read_settings(self, settings_filename):
         with open(settings_filename, 'r') as json_file:
             settings_json = json.load(json_file)
-        self.token = settings_json['TelegramToken']
+        self.token = os.environ['TelegramToken']
+        #self.token = settings_json['TelegramToken']
         self.webhook_app_url = settings_json['WebhookAppURL']
         self.webhook_ip = settings_json['WebhookIP']
         self.webhook_port = settings_json['WebhookPort']
