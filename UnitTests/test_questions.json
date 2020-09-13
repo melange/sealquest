@@ -1,0 +1,25 @@
+{
+    "questions": [
+        {
+            "text":"2*2",
+            "hint":"3+1",
+            "answer":"4",
+            "success_message": "good work!",
+            "fail_message": "not quite right"
+        },
+        {
+            "text":"dog says",
+            "hint":"no hint for you",
+            "answer":"woof",
+            "success_message": "well done!",
+            "fail_message": "you can do better!"
+        },
+        {
+            "text":"The capital of the UK",
+            "hint":"Come on, you know it!",
+            "answer":"London",
+            "success_message": "nice!",
+            "fail_message": "try again"
+        }
+    ]
+}
