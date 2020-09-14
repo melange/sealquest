@@ -22,8 +22,20 @@ class BotLogic:
         update.message.reply_text('Help')
 
 
-    def echo(self, update, context):
-        update.message.reply_text(update.message.text)
+    def question(self, update, context):
+        pass
+
+
+    def answer(self, update, context):
+        pass
+
+
+    def hint(self, update, context):
+        pass
+
+
+    def end(self, update, context):
+        pass
 
 
     def error(self, update, context):
