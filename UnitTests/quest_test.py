@@ -38,3 +38,7 @@ class Test_Quest(unittest.TestCase):
         message = quest.start_quest()
         self.assertEqual(quest.current_question, q1)
         self.assertEqual(message, q1.get_question)
+
+        
+if __name__ == '__main__':
+    unittest.main()
