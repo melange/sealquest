@@ -41,26 +41,27 @@ class Test_Quest(unittest.TestCase):
         messages_list = quest.start_quest()
         self.assertEqual(quest.is_started, True)
         self.assertEqual(len(messages_list), 2)
-        self.assertEqual(quest.current_question, questions_list[0])
+        self.assertEqual(quest.current_question, questions_provider.get_questions()[0])
         self.assertEqual(quest.current_question_number, 0)
         self.assertEqual(messages_list[0], quest.messages['welcome'])
-        self.assertEqual(messages_list[1], questions_list[0].get_question)
+        self.assertEqual(messages_list[1], questions_provider.get_questions()[0].get_question())
 
-
+    @patch('questions_provider.QuestionsProvider')
     def test_start_quest_if_already_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
         quest = Quest(questions_provider)
         quest.is_started = True
         quest.current_question = questions_list[2]
+        quest.current_question_number = 2
         messages_list = quest.start_quest()
         self.assertEqual(quest.is_started, True)
-        self.assertEqual(quest.current_question, questions_list[2])
+        self.assertEqual(quest.current_question, questions_provider.get_questions()[2])
         self.assertEqual(quest.current_question_number, 2)
         self.assertEqual(len(messages_list), 1)
         self.assertEqual(messages_list[0], quest.messages['quest_already_started'])
 
-
+    @patch('questions_provider.QuestionsProvider')
     def test_get_current_question_if_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -74,6 +75,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[0], questions_list[2].get_question)
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_get_current_question_if_not_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -85,6 +87,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_get_hint_if_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -95,9 +98,10 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.current_question, questions_list[2])
         self.assertEqual(quest.current_question_number, 2)
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], questions_list[2].get_hint)
+        self.assertEqual(messages_list[0], questions_list[2].get_hint())
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_get_hint_if_not_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -109,6 +113,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_assess_answer_if_started_correct_answer(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -126,6 +131,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[2], questions_list[2].get_question)
 
     
+    @patch('questions_provider.QuestionsProvider')
     def test_assess_answer_if_not_started_correct_answer(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -139,6 +145,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_assess_answer_if_started_incorrect_answer(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -155,6 +162,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[1], quest.messages['incorrect_answer'])
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_assess_answer_if_not_started_incorrect_answer(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -167,7 +175,8 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(len(messages_list), 1)
         self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
 
-    
+
+    @patch('questions_provider.QuestionsProvider')    
     def test_assess_answer_if_not_started_correct_answer_last_question(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -184,6 +193,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.is_started, False)
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_end_quest_if_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list
@@ -196,6 +206,7 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(messages_list[0], quest.messages['quest_ended'])
 
 
+    @patch('questions_provider.QuestionsProvider')
     def test_end_quest_if_not_started(self, questions_provider):
         questions_list = self.generate_questions_list()
         questions_provider.get_questions.return_value = questions_list

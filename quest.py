@@ -10,16 +10,20 @@ class Quest:
         self.messages['correct_answer'] = 'Nice! Keep going!'
         self.messages['incorrect_answer'] = 'Try again!'
         self.questions = questions_provider.get_questions()
-
-
-    def process_message(self, message):
-        pass
+        self.is_started = False
 
 
     def start_quest(self):
-        self.current_question_number = 0
-        self.current_question = self.questions[self.current_question_number]
-        return self.current_question.get_question()
+        messages_list = list()
+        if not self.is_started:
+            self.current_question_number = 0
+            self.current_question = self.questions[self.current_question_number]
+            self.is_started = True
+            messages_list.append(self.messages['welcome'])
+            messages_list.append(self.current_question.get_question())
+        else:
+            messages_list.append(self.messages['quest_already_started'])
+        return messages_list    
 
 
     def get_current_question(self):
