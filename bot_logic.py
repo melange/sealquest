@@ -14,8 +14,10 @@ class BotLogic:
 
 
     def __init__(self, quest):
-        self.is_started = False
+        if quest is None:
+            raise AttributeError
         self.quest = quest
+        self.is_started = False
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
         self.logger = logging.getLogger(__name__)
 
