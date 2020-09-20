@@ -69,9 +69,12 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(len(messages_list), 3)
         self.assertEqual(quest.get_current_question(), questions_provider.get_questions()[0])
         self.assertEqual(quest.current_question_number, 0)
-        self.assertEqual(messages_list[0], quest.messages['welcome'])
-        self.assertEqual(messages_list[1], 'Question 1 of 3')
-        self.assertEqual(messages_list[2], questions_provider.get_questions()[0].get_question())
+        self.assertEqual(messages_list[0].text, quest.messages['welcome'])
+        self.assertEqual(messages_list[0].as_reply, False)
+        self.assertEqual(messages_list[1].text, 'Question 1 of 3')
+        self.assertEqual(messages_list[1].as_reply, False)
+        self.assertEqual(messages_list[2].text, questions_provider.get_questions()[0].get_question())
+        self.assertEqual(messages_list[2].as_reply, False)
 
     @patch('questions_provider.QuestionsProvider')
     def test_start_quest_if_already_started(self, questions_provider):
@@ -85,7 +88,8 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.get_current_question(), questions_provider.get_questions()[2])
         self.assertEqual(quest.current_question_number, 2)
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_already_started'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_already_started'])
+        self.assertEqual(messages_list[0].as_reply, False)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -101,8 +105,10 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.get_current_question(), questions_list[2])
         self.assertEqual(quest.current_question_number, 2)
         self.assertEqual(len(messages_list), 2)
-        self.assertEqual(messages_list[0], 'Question 3 of 3')
-        self.assertEqual(messages_list[1], questions_list[2].get_question())
+        self.assertEqual(messages_list[0].text, 'Question 3 of 3')
+        self.assertEqual(messages_list[0].as_reply, False)
+        self.assertEqual(messages_list[1].text, questions_list[2].get_question())
+        self.assertEqual(messages_list[1].as_reply, False)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -114,7 +120,8 @@ class Test_Quest(unittest.TestCase):
         quest.current_question_number = 2
         messages_list = quest.get_question_text()
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].as_reply, False)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -128,7 +135,8 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.get_current_question(), questions_list[2])
         self.assertEqual(quest.current_question_number, 2)
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], questions_list[2].get_hint())
+        self.assertEqual(messages_list[0].text, questions_list[2].get_hint())
+        self.assertEqual(messages_list[0].as_reply, False)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -140,7 +148,8 @@ class Test_Quest(unittest.TestCase):
         quest.current_question_number = 2
         messages_list = quest.get_hint()
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].as_reply, False)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -158,10 +167,14 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.get_current_question(), questions_list[2])
         self.assertEqual(quest.current_question_number, 2)
         self.assertEqual(len(messages_list), 4)
-        self.assertEqual(messages_list[0], questions_list[1].success_message)
-        self.assertEqual(messages_list[1], quest.messages['correct_answer'])
-        self.assertEqual(messages_list[2], 'Question 3 of 3')
-        self.assertEqual(messages_list[3], questions_list[2].get_question())
+        self.assertEqual(messages_list[0].text, questions_list[1].success_message)
+        self.assertEqual(messages_list[0].as_reply, True)
+        self.assertEqual(messages_list[1].text, quest.messages['correct_answer'])
+        self.assertEqual(messages_list[1].as_reply, True)
+        self.assertEqual(messages_list[2].text, 'Question 3 of 3')
+        self.assertEqual(messages_list[2].as_reply, False)
+        self.assertEqual(messages_list[3].text, questions_list[2].get_question())
+        self.assertEqual(messages_list[3].as_reply, False)
 
     
     @patch('questions_provider.QuestionsProvider')
@@ -177,7 +190,8 @@ class Test_Quest(unittest.TestCase):
         messages_list = quest.assess_answer(questions_list[1].answer)
         
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].as_reply, True)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -195,8 +209,10 @@ class Test_Quest(unittest.TestCase):
         self.assertEqual(quest.get_current_question(), questions_list[1])
         self.assertEqual(quest.current_question_number, 1)
         self.assertEqual(len(messages_list), 2)
-        self.assertEqual(messages_list[0], questions_list[1].fail_message)
-        self.assertEqual(messages_list[1], quest.messages['incorrect_answer'])
+        self.assertEqual(messages_list[0].text, questions_list[1].fail_message)
+        self.assertEqual(messages_list[0].as_reply, True)
+        self.assertEqual(messages_list[1].text, quest.messages['incorrect_answer'])
+        self.assertEqual(messages_list[1].as_reply, True)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -212,11 +228,12 @@ class Test_Quest(unittest.TestCase):
         messages_list = quest.assess_answer(questions_list[1].answer + 'abc')
         
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].as_reply, True)
 
 
     @patch('questions_provider.QuestionsProvider')    
-    def test_assess_answer_if_not_started_correct_answer_last_question(self, questions_provider):
+    def test_assess_answer_if_started_correct_answer_last_question(self, questions_provider):
         questions_list = self.generate_questions_list()
         q3 = questions_list[2]
         q3.assess_answer.return_value = (True, q3.success_message)
@@ -228,9 +245,12 @@ class Test_Quest(unittest.TestCase):
         messages_list = quest.assess_answer(questions_list[2].answer)
         
         self.assertEqual(len(messages_list), 3)
-        self.assertEqual(messages_list[0], questions_list[2].success_message)
-        self.assertEqual(messages_list[1], quest.messages['correct_answer'])
-        self.assertEqual(messages_list[2], quest.messages['finish'])
+        self.assertEqual(messages_list[0].text, questions_list[2].success_message)
+        self.assertEqual(messages_list[0].as_reply, True)
+        self.assertEqual(messages_list[1].text, quest.messages['correct_answer'])
+        self.assertEqual(messages_list[1].as_reply, True)
+        self.assertEqual(messages_list[2].text, quest.messages['finish'])
+        self.assertEqual(messages_list[2].as_reply, False)
         self.assertEqual(quest.is_started, False)
 
 
@@ -244,7 +264,8 @@ class Test_Quest(unittest.TestCase):
         messages_list = quest.end_quest()
         self.assertEqual(quest.is_started, False)
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_ended'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_ended'])
+        self.assertEqual(messages_list[0].as_reply, False)
 
 
     @patch('questions_provider.QuestionsProvider')
@@ -257,7 +278,8 @@ class Test_Quest(unittest.TestCase):
         messages_list = quest.end_quest()
         self.assertEqual(quest.is_started, False)
         self.assertEqual(len(messages_list), 1)
-        self.assertEqual(messages_list[0], quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].text, quest.messages['quest_not_started'])
+        self.assertEqual(messages_list[0].as_reply, False)
 
 
 if __name__ == '__main__':
