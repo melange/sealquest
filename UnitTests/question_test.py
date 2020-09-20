@@ -18,6 +18,7 @@ class Test_Question(unittest.TestCase):
         self.assertEqual(q.success_message, success_message)
         self.assertEqual(q.fail_message, fail_message)
 
+
     def test_assess_answer_true(self):
         text = 'my text'
         hint = 'my hint'
