@@ -34,7 +34,7 @@ class BotContainer:
         #self._dp.add_handler(CommandHandler("stop", self.logic.stop))
         #self._dp.add_handler(CommandHandler("help", self.logic.help))
         #self._dp.add_handler(CommandHandler("hint", self.logic.hint))
-        self._dp.add_handler(MessageHandler(Filters.text | Filters.command, self.logic.handle_message))
+        self._dp.add_handler(MessageHandler(Filters.text, self.logic.handle_message))
         self._dp.add_error_handler(self.logic.error)
 
 
