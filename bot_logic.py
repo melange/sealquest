@@ -36,9 +36,9 @@ class BotLogic:
         if self.is_started == False:
             self.is_started = True
             self.quest.start_quest()
-            messages_list.append(self.messages['bot_started'])
+            messages_list.append(QuestMessage(self.messages['bot_started'], False))
         else:
-            messages_list.append(self.messages['bot_is_already_runnings'])
+            messages_list.append(QuestMessage(self.messages['bot_is_already_runnings'], False))
         self.send_messages(update, context, messages_list)
 
 
@@ -47,15 +47,15 @@ class BotLogic:
         if self.is_started == True:
             self.is_started = False
             self.quest.end_quest()
-            messages_list.append(self.messages['bot_stopped'])
+            messages_list.append(QuestMessage(self.messages['bot_stopped'], False))
         else:
-            messages_list.append(self.messages['bot_not_started'])
+            messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
         self.send_messages(update, context, messages_list)
 
 
     def help(self, update, context):
         messages_list = list()
-        messages_list.append(self.messages['help'])
+        messages_list.append(QuestMessage(self.messages['help'], False))
         self.send_messages(update, context, messages_list)
 
 
@@ -64,7 +64,7 @@ class BotLogic:
         if self.is_started:
             messages_list += self.quest.get_hint()
         else:
-            messages_list.append(self.messages['bot_not_started'])
+            messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
         self.send_messages(update, context, messages_list)
 
 
@@ -74,13 +74,13 @@ class BotLogic:
             answer = update.message
             messages_list += self.quest.assess_answer(answer)
         else:
-            messages_list.append(self.messages['bot_not_started'])
+            messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
         self.send_messages(update, context, messages_list)
 
 
     def error(self, update, context):
         messages_list = list()
-        error_message = 'Update "%s" caused error "%s"' % update, context.error
-        messages_list.append(error_message)
+        error_message = "Update %s caused error %s" % update, context.error
+        messages_list.append(QuestMessage(error_message, False))
         self.logger.warning(error_message)
         self.send_messages(update, context, messages_list)
