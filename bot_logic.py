@@ -26,9 +26,9 @@ class BotLogic:
         if (update.message.text == "/start"):
             self.start(update, context)
         elif (update.message.text == "/stop"):
-            self.hint(update, context)
+            self.stop(update, context)
         elif (update.message.text == "/help"):
-            self.hint(update, context)
+            self.help(update, context)
         elif (update.message.text == "/hint"):
             self.hint(update, context)
         else:
@@ -87,7 +87,7 @@ class BotLogic:
     def answer(self, update, context):
         messages_list = list()
         if self.is_started:
-            messages_list.append(QuestMessage(self.messages['answer_received'], False))
+            #messages_list.append(QuestMessage(self.messages['answer_received'], False))
             answer_text = update.message.text
             messages_list += self.quest.assess_answer(answer_text)
         else:
