@@ -74,7 +74,7 @@ class BotLogic:
     def answer(self, update, context):
         messages_list = list()
         if self.is_started:
-            answer = update.message
+            answer = update.message.text
             messages_list += self.quest.assess_answer(answer)
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
