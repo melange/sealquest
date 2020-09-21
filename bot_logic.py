@@ -29,7 +29,7 @@ class BotLogic:
         if messages_list:
             for message in messages_list:
                 if message.as_reply:
-                    context.bot.send_message(chat_id, reply_to_message_id = message_id)
+                    context.bot.send_message(chat_id, message.text, reply_to_message_id = message_id)
                 else:
                     context.bot.send_message(chat_id, message.text)
 
@@ -75,8 +75,8 @@ class BotLogic:
         messages_list = list()
         if self.is_started:
             messages_list.append(QuestMessage(self.messages['answer_received'], False))
-            answer_text = update.message.text
-            messages_list += self.quest.assess_answer(answer_text)
+            #answer_text = update.message.text
+            #messages_list += self.quest.assess_answer(answer_text)
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
         self.send_messages(update, context, messages_list)
