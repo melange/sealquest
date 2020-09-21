@@ -23,13 +23,13 @@ class BotLogic:
 
 
     def handle_message(self, update, context):
-        if update.message.text == "/start":
+        if (update.message.text == "/start"):
             self.start(update, context)
-        else if update.message.text == "/stop":
+        elif (update.message.text == "/stop"):
             self.hint(update, context)
-        else if update.message.text == "/help":
+        elif (update.message.text == "/help"):
             self.hint(update, context)
-        else if update.message.text == "/hint":
+        elif (update.message.text == "/hint"):
             self.hint(update, context)
         else:
             self.answer(update, context)
