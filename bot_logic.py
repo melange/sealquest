@@ -22,6 +22,19 @@ class BotLogic:
         self.logger = logging.getLogger(__name__)
 
 
+    def handle_message(self, update, context):
+        if update.message.text == "/start":
+            self.start(update, context)
+        else if update.message.text == "/stop":
+            self.hint(update, context)
+        else if update.message.text == "/help":
+            self.hint(update, context)
+        else if update.message.text == "/hint":
+            self.hint(update, context)
+        else:
+            self.answer(update, context)
+
+
     def send_messages(self, update, context, messages_list):
         chat_id = update.message.chat.id
         message_id = update.message.message_id
@@ -75,8 +88,8 @@ class BotLogic:
         messages_list = list()
         if self.is_started:
             messages_list.append(QuestMessage(self.messages['answer_received'], False))
-            #answer_text = update.message.text
-            #messages_list += self.quest.assess_answer(answer_text)
+            answer_text = update.message.text
+            messages_list += self.quest.assess_answer(answer_text)
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
         self.send_messages(update, context, messages_list)
