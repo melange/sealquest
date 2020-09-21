@@ -11,7 +11,7 @@ class BotLogic:
     messages['bot_stopped'] = 'Bot stopepd. Use /start to start the quest'
     messages['help'] = '/start - start bot\n/stop - stop bot\n/hint - ask for a hint\nTo answer a question send a message'
     messages['bot_is_already_runnings'] = 'Bot is already running. To stop use /stop'
-
+    messages['answer_received'] = 'Answer received'
 
     def __init__(self, quest):
         if quest is None:
@@ -74,8 +74,9 @@ class BotLogic:
     def answer(self, update, context):
         messages_list = list()
         if self.is_started:
-            answer = update.message.text
-            messages_list += self.quest.assess_answer(answer)
+            messages_list.append(QuestMessage(self.messages['answer_received'], False))
+            answer_text = update.message.text
+            messages_list += self.quest.assess_answer(answer_text)
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
         self.send_messages(update, context, messages_list)
