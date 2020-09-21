@@ -23,12 +23,15 @@ class BotLogic:
 
 
     def send_messages(self, update, context, messages_list):
+        chat_id = update.message.chat.id
+        message_id = update.message.message_id
+
         if messages_list:
             for message in messages_list:
                 if message.as_reply:
-                    update.message.reply_text(message.text)
+                    context.bot.send_message(chat_id, reply_to_message_id = message_id)
                 else:
-                    context.bot.send_message(None, message.text)
+                    context.bot.send_message(chat_id, message.text)
 
 
     def start(self, update, context):
@@ -80,7 +83,7 @@ class BotLogic:
 
     def error(self, update, context):
         messages_list = list()
-        error_message = "Update %s caused error %s" % update, context.error
+        error_message = "Update caused error"
         messages_list.append(QuestMessage(error_message, False))
         self.logger.warning(error_message)
         self.send_messages(update, context, messages_list)
