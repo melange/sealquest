@@ -38,8 +38,8 @@ class BotLogic:
         messages_list = list()
         if self.is_started == False:
             self.is_started = True
-            self.quest.start_quest()
             messages_list.append(QuestMessage(self.messages['bot_started'], False))
+            messages_list += self.quest.start_quest()
         else:
             messages_list.append(QuestMessage(self.messages['bot_is_already_runnings'], False))
         self.send_messages(update, context, messages_list)
