@@ -23,19 +23,37 @@ class BotLogic:
 
 
     def handle_message(self, update, context):
+        messages_list = list()
+
+        if update is None:
+            raise AttributeError
+        if context is None:
+            raise AttributeError
+
         if (update.message.text == "/start"):
-            self.start(update, context)
+            messages_list += self.start()
         elif (update.message.text == "/stop"):
-            self.stop(update, context)
+            messages_list += self.stop()
         elif (update.message.text == "/help"):
-            self.help(update, context)
+            messages_list += self.help()
         elif (update.message.text == "/hint"):
-            self.hint(update, context)
+            messages_list += self.hint()
         else:
-            self.answer(update, context)
+            answer_text = update.message.text
+            messages_list += self.answer(answer_text)
+        
+        self.send_messages(update, context, messages_list)
 
 
     def send_messages(self, update, context, messages_list):
+        if update is None:
+            raise AttributeError
+        if context is None:
+            raise AttributeError
+        if messages_list is None:
+            raise AttributeError
+
+
         chat_id = update.message.chat.id
         message_id = update.message.message_id
 
@@ -47,7 +65,7 @@ class BotLogic:
                     context.bot.send_message(chat_id, message.text)
 
 
-    def start(self, update, context):
+    def start(self):
         messages_list = list()
         if self.is_started == False:
             self.is_started = True
@@ -55,10 +73,10 @@ class BotLogic:
             messages_list += self.quest.start_quest()
         else:
             messages_list.append(QuestMessage(self.messages['bot_is_already_runnings'], False))
-        self.send_messages(update, context, messages_list)
+        return messages_list
 
 
-    def stop(self, update, context):
+    def stop(self):
         messages_list = list()
         if self.is_started == True:
             self.is_started = False
@@ -66,33 +84,31 @@ class BotLogic:
             messages_list.append(QuestMessage(self.messages['bot_stopped'], False))
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
-        self.send_messages(update, context, messages_list)
+        return messages_list
 
 
-    def help(self, update, context):
+    def help(self):
         messages_list = list()
         messages_list.append(QuestMessage(self.messages['help'], False))
-        self.send_messages(update, context, messages_list)
+        return messages_list
 
 
-    def hint(self, update, context):
+    def hint(self):
         messages_list = list()
         if self.is_started:
             messages_list += self.quest.get_hint()
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
-        self.send_messages(update, context, messages_list)
+        return messages_list
 
 
-    def answer(self, update, context):
+    def answer(self, answer_text):
         messages_list = list()
         if self.is_started:
-            #messages_list.append(QuestMessage(self.messages['answer_received'], False))
-            answer_text = update.message.text
             messages_list += self.quest.assess_answer(answer_text)
         else:
             messages_list.append(QuestMessage(self.messages['bot_not_started'], False))
-        self.send_messages(update, context, messages_list)
+        return messages_list
 
 
     def error(self, update, context):
@@ -100,4 +116,4 @@ class BotLogic:
         error_message = "Update caused error"
         messages_list.append(QuestMessage(error_message, False))
         self.logger.warning(error_message)
-        self.send_messages(update, context, messages_list)
+        return messages_list
