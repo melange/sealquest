@@ -3,7 +3,7 @@ import logging
 import os
 import psycopg2
 
-class QuestionsProvider:
+class QuestionsProviderPsql:
 
     def __init__(self, settings_provider):
         self.database_url = settings_provider.settings['database_url']
