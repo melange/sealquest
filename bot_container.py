@@ -21,11 +21,10 @@ class BotContainer:
 
 
     def get_settings(self, bot_settings_provider):
-        settings = bot_settings_provider.get_settings()
-        self.token = settings['token']
-        self.webhook_app_url = settings['webhook_app_url']
-        self.webhook_ip = settings['webhook_ip']
-        self.webhook_port = settings['webhook_port']
+        self.token = bot_settings_provider.settings['token']
+        self.webhook_app_url = bot_settings_provider.settings['webhook_app_url']
+        self.webhook_ip = bot_settings_provider.settings['webhook_ip']
+        self.webhook_port = bot_settings_provider.settings['webhook_port']
 
 
 

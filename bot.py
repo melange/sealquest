@@ -10,9 +10,10 @@ from bot_settings_provider import BotSettingsProvider
 
 
 def main():
-    questions_provider = QuestionsProvider('questions.json')
+    settings_provider = BotSettingsProvider()
+    questions_provider = QuestionsProvider(settings_provider)
     quest = Quest(questions_provider)
-    bot = BotContainer(BotSettingsProvider(), BotLogic(quest))
+    bot = BotContainer(settings_provider, BotLogic(quest))
     bot.start()
 
 if __name__ == '__main__':
