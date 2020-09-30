@@ -17,7 +17,7 @@ class Test_BotContainer(unittest.TestCase):
         settings_dict['webhook_app_url'] = 'https://seal-quest-bot.herokuapp.com/'
         settings_dict['webhook_ip'] =  '0.0.0.0'
         settings_dict['webhook_port'] = 5000
-        settings_provider.get_settings.return_value = settings_dict
+        settings_provider.settings = settings_dict
 
         botContainer = BotContainer(settings_provider, logic)
         self.assertEqual(botContainer.token, '1389512183:AAHIV1J5B67VpIbsxQyxgoZJ_Qion3kcpvg')

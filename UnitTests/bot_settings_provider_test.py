@@ -13,7 +13,8 @@ class Test_BotSettingsProvider(unittest.TestCase):
             'WebhookAppURL': 'https://some-app.herokuapp.com/',
             'WebhookIP': '0.0.0.0',
             'PORT': '423',
-            'QuestionsFile': 'questions.json'
+            'QuestionsFile': 'questions.json',
+            'DATABASE_URL': 'postgres://hadasd'
         }
     )
     def test_get_settings(self):
@@ -27,13 +28,14 @@ class Test_BotSettingsProvider(unittest.TestCase):
         #mocked_environ = settings_dict
 
         bot_settings_provider = BotSettingsProvider()
-        settings = bot_settings_provider.get_settings()
+        settings = bot_settings_provider.settings
         
         self.assertEqual(settings['token'], '123:ABCDE')
         self.assertEqual(settings['webhook_app_url'], 'https://some-app.herokuapp.com/')
         self.assertEqual(settings['webhook_ip'], '0.0.0.0')
         self.assertEqual(int(settings['webhook_port']), 423)
         self.assertEqual(settings['questions_file'], 'questions.json')
+        self.assertEqual(settings['database_url'], 'postgres://hadasd')
 
 
 if __name__ == '__main__':
