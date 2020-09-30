@@ -47,7 +47,6 @@ class QuestionsProviderPsql:
             # Closing database connection.
             if(self.connection):
                 self.connection.close()
-                self.logger.error("No questions in the provided file")
                 self.logger.info("PostgreSQL connection is closed")
 
         return questions

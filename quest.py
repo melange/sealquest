@@ -15,16 +15,19 @@ class Quest:
     def __init__(self, questions_provider):
         if questions_provider is None:
             logging.error("questions_provider is none")
-        self.questions = questions_provider.get_questions()
+        self.questions_provider = questions_provider
+        self.questions = self.questions_provider.get_questions()
         self.current_question_number = 0
         self.is_started = False
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
         self.logger = logging.getLogger(__name__)
 
 
-    def start_quest(self):
+    def start_quest(self, update_questions = True):
         messages_list = list()
         if not self.is_started:
+            if update_questions:
+                self.questions = self.questions_provider.get_questions()
             self.current_question_number = 0
             self.is_started = True
             self.logger.info("Quest started")
